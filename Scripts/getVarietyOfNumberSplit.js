@@ -1,6 +1,6 @@
 let varietyCache = {};
 
-function getVarieties(x) {
+function getVarieties(x, step=0) {
     console.group(x);
 
     let varieties = 0;
@@ -12,15 +12,16 @@ function getVarieties(x) {
         varieties++;
         while (1) {
             exp.sort((a,b) => b-a);
-            console.log(`#${varieties}`, (`${i}+` + exp.join("+")).replace(/\+$/, ""));
+            console.log(`#${varieties+step}`, (`${i}+` + exp.join("+")).replace(/\+$/, ""));
             const idxToChange = exp.findIndex(e => e != 1);
             if (-1 !== idxToChange) {
                 const temp = exp[idxToChange];
                 if (temp >= 4) {
                     if (typeof varietyCache[temp] === "undefined") {
-                        varieties += getVarieties(temp)-1;
+                        varieties += getVarieties(temp, varieties)-1;
                     } else {
                         varieties += varietyCache[temp]-1;
+                        console.log(`#${varieties+step}`, `[ ${temp} ]`)
                     }
                     exp = exp.concat(new Array(temp).fill(1));
                     exp.splice(idxToChange, 1);
