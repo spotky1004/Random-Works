@@ -9,11 +9,11 @@ let userDataD = JSON.stringify(userData);
 fs.writeFile('./botData.json', userDataD, err => console.error);
 const bot = new Discord.Client();
 
-const token = 'token here!';
+const token = 'I ate token';
 
 bot.on('ready', () => {
   console.log('online!');
-  let logChannel2 = bot.channels.cache.get("none");
+  let logChannel2 = bot.channels.cache.get('740368062280106044');
   logChannel2.send('숩버 온라인!');
   msgLogCount = 0;
   lastAuthor = 0;
@@ -24,10 +24,9 @@ bot.on('ready', () => {
 })
 
 bot.on('message', msg=>{
-  rpMsgContent = msg.content.replace(/\<\:\_sur\:813727756998410350\>/g, '수').replace(/\<\:\_ber\:813727771750432818\>/g, '버').replace(/\<\:\_ba\:813727783803944982\>/g, '바').replace(/\<\:\_bu\:813727794542280734\>/g, '부')
   if (msg.author.bot) return;
   if (bommed) return;
-  if (msg.author.id == "none" || !(msg.channel.id == "none" || msg.channel.id == "none" || msg.channel.id == "none" || msg.channel.id == "none" || msg.channel.id == "none" || msg.channel.id == "none" || msg.channel.id == "none" || msg.guild === null)) {
+  if (msg.author.id == 740505181594189864 || !(msg.channel.id == 740368062280106044 || msg.channel.id == 741612121074434119 || msg.channel.id == 697389133361971315 || msg.channel.id == 721197759012536391 || msg.channel.id == 727765114912112640 || msg.channel.id == 790492786470027294 || msg.channel.id == 697389080153030670 || msg.guild === null)) {
     return;
   }
   if (sessionData[msg.author.id] !== undefined) {
@@ -36,19 +35,19 @@ bot.on('message', msg=>{
   playerSet(msg);
   if (1) {
     for (var i = 0; i < commandRep.length; i++) {
-      if (commandRep[i] == rpMsgContent.replace('수버야 ', '') && authorData.varietyArr[300+i] == 0) {
+      if (commandRep[i] == msg.content.replace('수버야 ', '') && authorData.varietyArr[300+i] == 0) {
         authorData.varietyArr[300+i] = 1;
         authorData.varietyTypeArr[3]++;
         authorData.variety++;
       }
     }
   }
-  if (rpMsgContent.startsWith('수버야 eval ')) {
-    if (msg.author.id == "none") {
+  if (msg.content.startsWith('수버야 eval ')) {
+    if (msg.author.id == 357504806358614035) {
       try {
-        msgToSend = '```js\n' + rpMsgContent.substr(('dev eval ').length) + '\n```\n`<- ' + eval(rpMsgContent.substr(('dev eval ').length)) + '`';
+        msgToSend = '```js\n' + msg.content.substr(('dev eval ').length) + '\n```\n`<- ' + eval(msg.content.substr(('dev eval ').length)) + '`';
       } catch (e) {
-        msgToSend = '```js\n' + rpMsgContent.substr(('dev eval ').length) + '\n```\n`<- ' + e + '`';
+        msgToSend = '```js\n' + msg.content.substr(('dev eval ').length) + '\n```\n`<- ' + e + '`';
       }
       msg.channel.send(msgToSend);
     } else {
@@ -57,31 +56,31 @@ bot.on('message', msg=>{
     return;
   }
   msgToSend = '';
-  if (rpMsgContent == '수버야 도움' || rpMsgContent == '수버야 도와줘' || rpMsgContent == '수버야 도움말') {
+  if (msg.content == '수버야 도움' || msg.content == '수버야 도와줘' || msg.content == '수버야 도움말') {
     msg.channel.send("`수버야 스탯`: 여러가지 스텟을 보여줍니다\n`수버야 퀴즈`: 퀴즈를 시작합니다 (`쾅, 왘`, `ㅔ, ㅣㅏ`, `이모지`로 정답 제출 가능)\n`수버야 도감`: 도감을 보여줍니다\n`수버야 출첵`: 출첵!\n`수버야 랭킹`: 랭킹을 보여줍니다\n`수버야 힌트`: 도감에 없는 단어의 힌트를 보여줍니다 (쿨타임 60초)\n`수버야 커스텀`: 커스텀 명령을 추가합니다\n`수버야 계산해`: 계산을 해 줍니다 (여러 함수 사용 가능)\n`수버야 자폭해`: <:thrinking:737896997876662284>");
     return;
   }
-  if (rpMsgContent == '수버 일어나' || rpMsgContent == '수버 이러나' || rpMsgContent == '수버야 일어나' || rpMsgContent == '수버야 이러나') {
+  if (msg.content == '수버 일어나' || msg.content == '수버 이러나' || msg.content == '수버야 일어나' || msg.content == '수버야 이러나') {
     msg.channel.send("<:died:737676618889166888> <:gomdori:732230366114611202>").then((sentMessage) => setTimeout(() => { sentMessage.edit("<:surber:737428521777102968> <:happy_gomdori:735693167055339560>") }, 3000));
     return;
   }
-  if (rpMsgContent == '수버 잘자' || rpMsgContent == '수버야 잘자') {
+  if (msg.content == '수버 잘자' || msg.content == '수버야 잘자') {
     msg.channel.send("<:surber:737428521777102968> <:happy_gomdori:735693167055339560>").then((sentMessage) => setTimeout(() => { sentMessage.edit("<:died:737676618889166888> <:gomdori:732230366114611202>") }, 3000));
     return;
   }
-  if (rpMsgContent == '수버야 랭킹') {
+  if (msg.content == '수버야 랭킹') {
     msgToSend = '랭킹 이름: `수버, 버수, 퀴즈, 콤보, 도감, 자폭, 반응, 출첵`';
     msgToSend += '\nex) 수버야 랭킹 수버';
     msg.channel.send(msgToSend);
     return;
   }
-  if (rpMsgContent == '수버야 퀴즈') {
+  if (msg.content == '수버야 퀴즈') {
     quiz(authorData, msg);
     return;
   }
-  if (rpMsgContent.startsWith('수버야 랭킹 수버')) {
+  if (msg.content.startsWith('수버야 랭킹 수버')) {
     rankArr = [];
-    rankPage = Number(rpMsgContent.substr(10, rpMsgContent.length))-1;
+    rankPage = Number(msg.content.substr(10, msg.content.length))-1;
     if (isNaN(rankPage) || rankPage < 0) {
       rankPage = 0;
     }
@@ -102,9 +101,9 @@ bot.on('message', msg=>{
     msg.channel.send(msgToSend);
     return;
   }
-  if (rpMsgContent.startsWith('수버야 랭킹 버수')) {
+  if (msg.content.startsWith('수버야 랭킹 버수')) {
     rankArr = [];
-    rankPage = Number(rpMsgContent.substr(10, rpMsgContent.length))-1;
+    rankPage = Number(msg.content.substr(10, msg.content.length))-1;
     if (isNaN(rankPage) || rankPage < 0) {
       rankPage = 0;
     }
@@ -125,9 +124,9 @@ bot.on('message', msg=>{
     msg.channel.send(msgToSend);
     return;
   }
-  if (rpMsgContent.startsWith('수버야 랭킹 도감')) {
+  if (msg.content.startsWith('수버야 랭킹 도감')) {
     rankArr = [];
-    rankPage = Number(rpMsgContent.substr(10, rpMsgContent.length))-1;
+    rankPage = Number(msg.content.substr(10, msg.content.length))-1;
     if (isNaN(rankPage) || rankPage < 0) {
       rankPage = 0;
     }
@@ -148,9 +147,9 @@ bot.on('message', msg=>{
     msg.channel.send(msgToSend);
     return;
   }
-  if (rpMsgContent.startsWith('수버야 랭킹 자폭')) {
+  if (msg.content.startsWith('수버야 랭킹 자폭')) {
     rankArr = [];
-    rankPage = Number(rpMsgContent.substr(10, rpMsgContent.length))-1;
+    rankPage = Number(msg.content.substr(10, msg.content.length))-1;
     if (isNaN(rankPage) || rankPage < 0) {
       rankPage = 0;
     }
@@ -171,9 +170,9 @@ bot.on('message', msg=>{
     msg.channel.send(msgToSend);
     return;
   }
-  if (rpMsgContent.startsWith('수버야 랭킹 반응')) {
+  if (msg.content.startsWith('수버야 랭킹 반응')) {
     rankArr = [];
-    rankPage = Number(rpMsgContent.substr(10, rpMsgContent.length))-1;
+    rankPage = Number(msg.content.substr(10, msg.content.length))-1;
     if (isNaN(rankPage) || rankPage < 0) {
       rankPage = 0;
     }
@@ -194,9 +193,9 @@ bot.on('message', msg=>{
     msg.channel.send(msgToSend);
     return;
   }
-  if (rpMsgContent.startsWith('수버야 랭킹 퀴즈')) {
+  if (msg.content.startsWith('수버야 랭킹 퀴즈')) {
     rankArr = [];
-    rankPage = Number(rpMsgContent.substr(10, rpMsgContent.length))-1;
+    rankPage = Number(msg.content.substr(10, msg.content.length))-1;
     if (isNaN(rankPage) || rankPage < 0) {
       rankPage = 0;
     }
@@ -217,9 +216,9 @@ bot.on('message', msg=>{
     msg.channel.send(msgToSend);
     return;
   }
-  if (rpMsgContent.startsWith('수버야 랭킹 콤보')) {
+  if (msg.content.startsWith('수버야 랭킹 콤보')) {
     rankArr = [];
-    rankPage = Number(rpMsgContent.substr(10, rpMsgContent.length))-1;
+    rankPage = Number(msg.content.substr(10, msg.content.length))-1;
     if (isNaN(rankPage) || rankPage < 0) {
       rankPage = 0;
     }
@@ -240,9 +239,32 @@ bot.on('message', msg=>{
     msg.channel.send(msgToSend);
     return;
   }
-  if (rpMsgContent.startsWith('수버야 랭킹 출첵')) {
+  if (msg.content.startsWith('수버야 랭킹 출첵2')) {
     rankArr = [];
-    rankPage = Number(rpMsgContent.substr(10, rpMsgContent.length))-1;
+    rankPage = Number(msg.content.substr(10, msg.content.length))-1;
+    if (isNaN(rankPage) || rankPage < 0) {
+      rankPage = 0;
+    }
+    for (const i in userData) {
+      if (i == 'meta') continue;
+      if (userData[i].attendMsgVariteyArr2 !== undefined) rankArr.push([userData[i].userName, userData[i].attendMsgVariteyArr2.length]);
+    }
+    if (rankPage > Math.floor(rankArr.length/20)) {
+      rankPage = Math.floor(rankArr.length/20);
+    }
+    rankArr = rankArr.sort((a, b) => b[1] - a[1]);
+    msgToSend += '```js\n';
+    for (var i = rankPage*20; i < Math.min(rankArr.length-rankPage*20, (rankPage+1)*20); i++) {
+      msgToSend += `${i+1}. ${rankArr[i][0]} - ${rankArr[i][1]} 개\n`;
+    }
+    msgToSend += `Page ${rankPage+1}`;
+    msgToSend += '```';
+    msg.channel.send(msgToSend);
+    return;
+  }
+  if (msg.content.startsWith('수버야 랭킹 출첵')) {
+    rankArr = [];
+    rankPage = Number(msg.content.substr(10, msg.content.length))-1;
     if (isNaN(rankPage) || rankPage < 0) {
       rankPage = 0;
     }
@@ -263,9 +285,9 @@ bot.on('message', msg=>{
     msg.channel.send(msgToSend);
     return;
   }
-  if (rpMsgContent.startsWith('수버야 계산해')) {
-    toEval = rpMsgContent.substr(8, rpMsgContent.length);
-    toEval = toEval.replace(/(\d+)\^{2}(\d+)/g, function(match, p1, p2){return p1 + (`^${p1}`).repeat(Math.min(100, p2-1))});
+  if (msg.content.startsWith('수버야 계산해')) {
+    toEval = msg.content.substr(8, msg.content.length);
+    toEval = toEval.replace(/(\d+)\^{2}(\d+)/g, function(match, p1, p2){return p1 + (`^${p1}`).repeat(p2-1)});
     msgToSend = `\`\`\`js\n${toEval}\n\`\`\``
     try {
       switch (toEval) {
@@ -285,7 +307,7 @@ bot.on('message', msg=>{
     }
     return;
   }
-  if (rpMsgContent == '수버야 스탯' || rpMsgContent == '수버야 수탯') {
+  if (msg.content == '수버야 스탯' || msg.content == '수버야 수탯') {
     msgToSend = '';
     msgToSend += '유저 <:died:737676618889166888>:`' + authorData.killed + '`\n유저 <:surber:737428521777102968>:`' + authorData.saved + '`\n글로벌 <:died:737676618889166888>: `' + userData.meta.totDeath + '`';
     if (authorData.maxBoomChain > 2) {
@@ -304,7 +326,7 @@ bot.on('message', msg=>{
     msg.channel.send(msgToSend);
     return;
   }
-  if (rpMsgContent == '수버야 도감') {
+  if (msg.content == '수버야 도감') {
     msgToSend = `**\`${authorData.userName}\`**님의 도감`;
     msgToSend += `\`\`\`cs\n[수버] (${authorData.varietyTypeArr[0]}/${msgToChange.length}) ${(msgToChange.length <= authorData.varietyTypeArr[0]) ? 'Done!': ''}\n\`\`\``
     for (var i = 0; i < msgToChange.length; i++) {
@@ -347,7 +369,7 @@ bot.on('message', msg=>{
     msg.channel.send(msgToSend.substr(0, 1999));
     return;
   }
-  if (rpMsgContent == '수버야 도감 출첵') {
+  if (msg.content == '수버야 도감 출첵') {
     msgToSend += `\`\`\`cs\n[출첵] (${authorData.attendMsgVaritey}/${toFixed(attendPossibility)}) ${(3570467226624 == authorData.attendMsgVaritey) ? 'Done!': ''}\n\`\`\``
     for (var i = 0; i < authorData.attendMsgVaritey; i++) {
       msgToSend += `**\`${authorData.attendMsgVariteyArr[i]}\`** `;
@@ -356,7 +378,7 @@ bot.on('message', msg=>{
     msg.channel.send(msgToSend.substr(0, 1999));
     return;
   }
-  if (rpMsgContent == '수버야 도감 출첵2') {
+  if (msg.content == '수버야 도감 출첵2') {
     msgToSend += `\`\`\`cs\n[출첵] (${authorData.attendMsgVaritey2}/${toFixed(attendPossibility)}) ${(attendPossibility == authorData.attendMsgVaritey2) ? 'Done!': ''}\n\`\`\``
     for (var i = 0; i < authorData.attendMsgVaritey2; i++) {
       msgToSend += `**\`${authorData.attendMsgVariteyArr2[i]}\`** `;
@@ -365,19 +387,19 @@ bot.on('message', msg=>{
     msg.channel.send(msgToSend.substr(0, 1999));
     return;
   }
-  if (rpMsgContent == '수버야 도감 초기화') {
+  if (msg.content == '수버야 도감 초기화') {
     dictReset(userData[msg.author.id], msg);
     return;
   }
-  if (rpMsgContent == '수버야 도감 출첵 초기화') {
+  if (msg.content == '수버야 도감 출첵 초기화') {
     dictReset2(userData[msg.author.id], msg);
     return;
   }
-  if (rpMsgContent == '수버야 도감 출첵2 초기화') {
+  if (msg.content == '수버야 도감 출첵2 초기화') {
     dictReset3(userData[msg.author.id], msg);
     return;
   }
-  if (rpMsgContent == '수버야 힌트') {
+  if (msg.content == '수버야 힌트') {
     if (new Date().getTime()-authorData.hintTime < 60000) {
       msg.channel.send(`다음 힌트까지 **\`${(60-(new Date().getTime()-authorData.hintTime)/1000).toFixed(2)}\`**/\`60.00\`초 남음`);
       return;
@@ -440,17 +462,17 @@ bot.on('message', msg=>{
     msg.channel.send(msgToSend);
     return;
   }
-  if (rpMsgContent == '수버야 자폭해') {
+  if (msg.content == '수버야 자폭해') {
     msg.channel.send('💥');
     return;
   }
-  if (rpMsgContent.replace(attendRegex, '') == '수버야 ' || rpMsgContent.replace(attendRegex, '') == '수부야 ') {
+  if (msg.content.replace(attendRegex, '') == '수버야 ' || msg.content.replace(attendRegex, '') == '수부야 ') {
     if (new Date().getTime() > authorData.attendStamp) {
       authorData.attendCount++;
       authorData.attendStamp = new Date().getTime()+(86400000-((new Date().getTime()-3600000*15)%86400000));
       msgToSend = `\`<- ${authorData.userName}\`\n출첵 ${authorData.attendCount}일차!\n다음 출첵까지: \`${((authorData.attendStamp-new Date().getTime())/3600000).toFixed(2)} 시간 남음\``;
-      if (!authorData.attendMsgVariteyArr.includes(rpMsgContent.replace('수버야 ', ''))) {
-        authorData.attendMsgVariteyArr.push(rpMsgContent.replace('수버야 ', ''));
+      if (!authorData.attendMsgVariteyArr.includes(msg.content.replace('수버야 ', ''))) {
+        authorData.attendMsgVariteyArr.push(msg.content.replace('수버야 ', ''));
         authorData.attendMsgVaritey++;
       }
       msg.channel.send(msgToSend);
@@ -458,14 +480,14 @@ bot.on('message', msg=>{
       msgToSend = `\`<- ${authorData.userName}\`\n오늘 이미 출첵 하셨습니다!\n다음 출첵까지: \`${((authorData.attendStamp-new Date().getTime())/3600000).toFixed(2)} 시간 남음\``;
       msg.channel.send(msgToSend);
     }
-    if (!authorData.attendMsgVariteyArr2.includes(rpMsgContent.replace('수버야 ', '').replace('수부야 ', ''))) {
-      authorData.attendMsgVariteyArr2.push(rpMsgContent.replace('수버야 ', '').replace('수부야 ', ''));
+    if (!authorData.attendMsgVariteyArr2.includes(msg.content.replace('수버야 ', '').replace('수부야 ', ''))) {
+      authorData.attendMsgVariteyArr2.push(msg.content.replace('수버야 ', '').replace('수부야 ', ''));
       authorData.attendMsgVaritey2++;
     }
     return;
   }
-  if (rpMsgContent.startsWith('수버야 커스텀')) {
-    var msgContext = rpMsgContent.substr(8, rpMsgContent.length);
+  if (msg.content.startsWith('수버야 커스텀')) {
+    var msgContext = msg.content.substr(8, msg.content.length);
     var args = msgContext.split(' ');
     var maxGen = authorData.customSlots+25;
     switch (args[0]) {
@@ -474,7 +496,7 @@ bot.on('message', msg=>{
         case '수버': case '버수':
         var addPoint = ((args[1] == '수버') ? 0 : 1);
         if (authorData.custom[addPoint].length < maxGen) {
-          args[2] = rpMsgContent.substr(14, 30);
+          args[2] = msg.content.substr(14, 30);
           if (args[2] === '') {
             msg.channel.send(`추가할 항목을 입력해주세요\nex) 수버야 커스텀 추가 ${args[1]} 쾅`);
           } else if (args[2].includes('`')) {
@@ -528,7 +550,7 @@ bot.on('message', msg=>{
       switch (args[1]) {
         case '수버': case '버수':
         var delPoint = ((args[1] == '수버') ? 0 : 1);
-        args[2] = rpMsgContent.substr(14, 30);
+        args[2] = msg.content.substr(14, 30);
         if (args[2] === undefined) {
           msg.channel.send(`제거할 항목을 입력해주세요\nex) 수버야 추가 ${args[1]} 쾅`);
         } else {
@@ -571,18 +593,21 @@ bot.on('message', msg=>{
     writeSave();
     return;
   }
-  // rip
-  /*if (rpMsgContent == '수버야 자폭해' || rpMsgContent.includes('<@!740505181594189864>')) {
+  /*if (msg.content == '수버야 자폭해' || msg.content.includes('<@!740505181594189864>')) {
     playerSet(msg);
     authorData.boom++;
     msg.channel.send('헤에ㅔㅔㅔㅔㅔ?');
     msgLogCount++;
+    msgLog = '\n==================\n메시지 로그 - ' + msgLogCount + '\nLocaton) ' + msg.channel.name + '\nAuthor ) '  + msg.author + '/' + msg.author.username + '\nMessage Time ) ' + new Date().getTime() + '\nMessage content ) ' + msg.content + '\n==================\n';
+    console.log(msgLog);
+    let logChannel = bot.channels.cache.get('741612121074434119');
+    logChannel.send(msgLog);
     setInterval( function () {
       asdf = asjfhoj;
     }, 3000);
     return;
   }*/
-  if ((rpMsgContent == '펑' || rpMsgContent == '쾅') && authorData.sadStat) {
+  if ((msg.content == '펑' || msg.content == '쾅') && authorData.sadStat) {
     var msgToSend = '';
     authorData.boomChain++;
     if (authorData.maxBoomChain < authorData.boomChain) authorData.maxBoomChain = authorData.boomChain;
@@ -606,7 +631,7 @@ bot.on('message', msg=>{
   }
   for (var i in sessionData) {
     if (sessionData[i].quizRunning) continue;
-    if (sessionData[i].quizRunning.includes(rpMsgContent)) {
+    if (sessionData[i].quizRunning.includes(msg.content)) {
       msg.channel.send('어뷰징 방지!');
       return;
     }
@@ -616,8 +641,8 @@ bot.on('message', msg=>{
     authorData.sadStat = 0;
     msgToMsgToChangeAll = msgToMsgToChange.concat(authorData.custom[0]).concat(authorData.custom[1]);
     for (var i = 0; i < msgToMsgToChangeAll.length; i++) {
-      if (rpMsgContent.toUpperCase().includes(msgToMsgToChangeAll[i].toUpperCase()) || rpMsgContent.replace(/수[!-힣]*버/g, '<:dinoed:737676618889166888>').includes('<:dinoed:737676618889166888>') || rpMsgContent.replace(/버[!-힣]*수/g, '<:dinoed:737676618889166888>').includes('<:dinoed:737676618889166888>')) {
-        tempMsg = rpMsgContent;
+      if (msg.content.toUpperCase().includes(msgToMsgToChangeAll[i].toUpperCase()) || msg.content.replace(/수[!-힣]*버/g, '<:dinoed:737676618889166888>').includes('<:dinoed:737676618889166888>') || msg.content.replace(/버[!-힣]*수/g, '<:dinoed:737676618889166888>').includes('<:dinoed:737676618889166888>')) {
+        tempMsg = msg.content;
         surberCount = 0;
         sadCount = 0;
         if (1) {
@@ -681,7 +706,7 @@ bot.on('message', msg=>{
         for (var k = priorityMax3; k >= 0; k--) {
           for (var i = 0; i < specialRep.length; i++) {
             if (priorityArr3[i] != k) continue;
-            if (!(rpMsgContent.toUpperCase().includes(specialRep[i][0].toUpperCase()))) continue;
+            if (!(msg.content.toUpperCase().includes(specialRep[i][0].toUpperCase()))) continue;
             if (!(authorData.varietyArr[i+200])) {
               authorData.varietyArr[i+200] = 1;
               authorData.varietyTypeArr[2]++;
@@ -712,6 +737,7 @@ bot.on('message', msg=>{
           msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
       	  .then(collected => {
       		  const reaction = collected.first();
+            //msg.reactions.cache.get('737428521777102968').remove().catch(error => console.error('Failed to remove reactions: ', error));
       		  if (reaction.emoji.name === 'surber') {
               userData[msg.author.id].react++;
               msg.react('737676618889166888');
@@ -719,6 +745,7 @@ bot.on('message', msg=>{
       		  }
         	})
           .catch(collected => {
+            //msg.reactions.cache.get('737428521777102968').remove().catch(error => console.error('Failed to remove reactions: ', error));
       	  });
         }
         //740368062280106044
@@ -727,6 +754,11 @@ bot.on('message', msg=>{
         authorData.sadStr = tempMsg;
         lastMessage = tempMsg;
         msgLogCount++;
+        if (msg.channel.id == 740368062280106044) {
+          msgLog = '\n==================\n메시지 로그 - ' + msgLogCount + '\nLocaton) ' + msg.channel.name + '\nAuthor ) '  + msg.author + '/' + msg.author.username + '\nMessage Time ) ' + new Date().getTime() + '\nMessage content ) ' + msg.content.replace(/<@444674062237564928>/g, '') + '\n==================\n';
+        } else {
+          msgLog = '\n==================\n메시지 로그 - ' + msgLogCount + '\nLocaton) ' + msg.channel.name + '\nAuthor ) '  + msg.author + '/' + msg.author.username + '\nMessage Time ) ' + new Date().getTime() + '\nMessage content ) null\n==================\n';
+        }
         msg.channel.send(tempMsg);
         authorData.killed += surberCount;
         if (surberCount < 0) {
@@ -738,7 +770,7 @@ bot.on('message', msg=>{
     }
   }
   //dev test
-  if (msg.author.id == "none") {
+  if (msg.author.id == 357504806358614035) {
 
   }
   writeSave();
@@ -763,10 +795,11 @@ async function quiz(tempAuthorData, tempMsg) {
       var strAddPart = msgToChange[idxThis]
       .replace('숩숩', '숩')
       .replace('<:blank:741195249677893713>', '숩')
-      .replace('surber\'s YT channel', '숩')
-      .replace('surber\'s Discord', '숩')
+      .replace('https://www.youtube.com/channel/UCU6NP7WqOb3IzHnMcIKt8Rw', '숩')
+      .replace('https://discord.gg/TXjkUM7', '숩')
       .replace('뻐', '숩')
-      .replace('수숩', '숩');
+      .replace('수숩', '숩')
+      .replace("숩뻐", "숩")
       var strToAdd = [strAddPart, 0];
     } else {
       var idxThis = Math.floor(Math.random()*Math.min(Math.floor(changeToMsg.length*Math.min(tempAuthorData.quizLevel/30, 1)), msgToChange.length));
@@ -806,7 +839,7 @@ async function quiz(tempAuthorData, tempMsg) {
   var failLevel = Math.max(Math.min(1/Math.sqrt(tempAuthorData.quizLevel), 1), 0.2+tempAuthorData.quizLevel/1000);
   tempMsg.channel.awaitMessages(m => m.author.id == tempMsg.author.id, {max: 1, time: ansLeng*Math.max(4000-tempAuthorData.quizLevel*10, 2000)+(10000-tempAuthorData.quizLevel/3), errors: ['time']})
   .then(collected => {
-    if (collected.first().author.id == "none" && collected.first().content == '스킵') {
+    if (collected.first().author.id == 357504806358614035 && collected.first().content == '스킵') {
       tempMsg.channel.send(`\`-> ${tempAuthorData.userName} Lv.${(tempAuthorData.quizLevel).toFixed(2)} -> ${(tempAuthorData.quizLevel+1).toFixed(2)}\`\n` + '스킵!');
       tempAuthorData.quizLevel++;
     } else if (collected.first().content.replace(/ㅔ/g, '쾅').replace(/ㅣㅏ/g, '왘').replace(/수버/g, '쾅').replace(/버수/g, '왘').replace(/\> /g, '>').replace(/<:died:737676618889166888>/g, '쾅').replace(/<:surber:737428521777102968>/g, '왘') == ansStr) {
@@ -907,7 +940,7 @@ function toFixed(x) {
 function setVar() {
   priorityMax = 3;
   priorityArr = [
-    0, 0, 0, 0, 0,
+    0, 0, 3, 0, 0,
     0, 0, 0, 0, 0,
     0, 0, 0, 0, 2,
     2, 0, 0, 1, 1,
@@ -920,7 +953,7 @@ function setVar() {
     0, 0, 0, 0, 2,
     0, 2, 0, 0, 0,
     0, 1, 0, 0, 0,
-    3
+    3, 0, 0
   ];
   //히ㅣ히히ㅣ힣ㅎ힣ㅎ히히힣히히ㅣㅣㅣ히히ㅣㅎ
   msgToChange = [
@@ -932,12 +965,12 @@ function setVar() {
     '스윽', '슥', '수뻐', '뻐', 'ㅔ',
     'Ｓｕｒｂｅｒ', '-수-', '<#740368062280106044>', '콩', 'zhkd',
     '밥부', '바부', 'ㄴㅁㅇ', 'babo', '🖥️',
-    '과부하', 'blank', 'surber\'s Discord', 'desktop', '!rank',
-    'surber\'s YT channel', '컴퓨터실', '스우마', '드보키', '터퓨컴',
+    '과부하', 'blank', 'https://discord.gg/TXjkUM7', 'desktop', '!rank',
+    'https://www.youtube.com/channel/UCU6NP7WqOb3IzHnMcIKt8Rw', '컴퓨터실', '스우마', '드보키', '터퓨컴',
     'ⓢⓤⓡⓑⓔⓡ', 'rebus', '재천', '🇸 🇺 🇷 🇧 🇪 🇷', 'deid',
     'ㅇ댱', '수숩', '␚', '– – · 　· · · · 　· – – 　–', '⠠⠍⠘⠎',
     '쑵', '쑵어', '쑤버', '<#790492786470027294>', '@everyone',
-    '수버야 삭val'
+    '수버야 삭val', '지옥참마도', "꽝"
   ];
   priorityMax2 = 1;
   priorityArr2 = [
@@ -962,20 +995,22 @@ function setVar() {
     '🇷 🇪 🇧 🇷 🇺 🇸', 'ⓡⓔⓑⓡⓤⓢ', '🖱️', '· – – 　– 　– – · 　· · · ·', '⠘⠎⠠⠍',
     'ꓤꓱꓭꓤꓵꓢ', '@here'
   ];
-  priorityMax3 = 1;
+  priorityMax3 = 2;
   priorityArr3 = [
     0, 0, 0, 0, 0,
     0, 0, 1, 0, 0,
     0, 1, 0, 0, 1,
     0, 1, 0, 1, 0,
-    0, 0, 0, 0, 0
+    0, 0, 0, 0, 0,
+    2, 0, 0
   ];
   specialRep = [
     ['수부', '<:subu:768798693595676682>'], ['곰돌이', '<:gomdori:732230366114611202>'], ['angry', '<:angry_:757632529367826514>'], ['haee', '<:haee:729334801395482634>'], ['<:thrinking:737896997876662284>', '<:thonking:737896985524174998>'],
     ['<:thonking:737896985524174998>', '<:thrinking:737896997876662284>'], ['감자', '<:potato_:773004372325957642>'], ['슬픈곰도리', '<:sad_gomdori:732230445051281418>'], ['ssaadd', '<:sad:757632588172230806>'], ['no signal', '<:no_signal:718034910903795752>'],
     ['펑', '<:explosion:717421644150210621>'], ['해피곰도리', '<:happy_gomdori:735693167055339560>'], ['h bot', '<:abrandhewh:772341509156241439>'], ['gniknirht', '<:gniknirht:773356241573380108>'], ['수저', '<:spoon:788724947220561940>'],
     ['나무', '<:SpotkyTree:759940404433911809>'], ['와', '<:__:790374944554352670>'], ['sans', '<:2_:790375501456867360>'], ['수조', '<:SuJo:794841189357453322>'], ['수', '<:Sur:796740357781585920>'],
-    ['버', '<:Ber:796740357274075217>'], ['ㅅ', '<:tSurber:797377396818182184>'], ['ㅜ', '<:nSurber:797377395379404827>'], ['ㅂ', '<:qSurber:797377395602620446>'], ['ㅓ', '<:jSurber:797377395475611648>']
+    ['버', '<:Ber:796740357274075217>'], ['ㅅ', '<:tSurber:797377396818182184>'], ['ㅜ', '<:nSurber:797377395379404827>'], ['ㅂ', '<:qSurber:797377395602620446>'], ['ㅓ', '<:jSurber:797377395475611648>'],
+    ['곰돌이쓰담', '<a:patTheGomdori:830261801903718451>'], ["부", "<:bu:833991212125519873>"], ["샌즈", "<a:Sans:790375501801062410>"]
   ];
   commandRep = [
     '도움', '도와줘', '도움말', '수버 일어나', '수버 이러나',
