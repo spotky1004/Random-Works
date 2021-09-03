@@ -1,6 +1,6 @@
-Game.registerMod("cooler sample mod",{
+Game.registerMod("cps counter",{
 	init:function(){
-		Game.Notify(`Spotky's mod loaded!`, `🌲!`,[16,5]);
+		Game.Notify(`CPS counter!`, `by spotky1004🌲#8812`,[12,10]);
 		const config = {
 			counters: 50,
 			counterChunk: 100,

@@ -1,8 +1,8 @@
 {
-	"Name": "CPS Counter",
-	"ID": "cps counter",
+	"Name": "Cookie Calculator",
+	"ID": "cookie calculator",
 	"Author": "Spotky1004",
-	"Description": "A mod display CPS",
+	"Description": "A mod display Cookie Production",
 	"ModVersion": 1,
 	"GameVersion": 2.04,
 	"Date": "03/09/2021",
