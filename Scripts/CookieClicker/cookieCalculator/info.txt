@@ -2,10 +2,11 @@
 	"Name": "Cookie Calculator",
 	"ID": "cookie calculator",
 	"Author": "Spotky1004",
-	"Description": "A mod display Cookie Production",
+	"Description": "A mod display some Production",
 	"ModVersion": 1,
 	"GameVersion": 2.04,
 	"Date": "03/09/2021",
 	"Dependencies": [],
-	"Disabled": 1
+	"Disabled": 1,
+	"AllowSteamAchieves": 1
 }
