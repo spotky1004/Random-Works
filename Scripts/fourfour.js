@@ -1,6 +1,5 @@
 let combs = {};
 
-const numbers = ["4", "44", "444", "4444"];
 const operators = ["+", "-", "*", "/"];
 
 /**
@@ -82,6 +81,6 @@ findComb({
   depth: 0
 });
 for (const n in combs) {
-  combs[n] = [...new Set(combs[n])]
+  combs[n] = [...new Set(combs[n])];
 }
 console.log(combs);
