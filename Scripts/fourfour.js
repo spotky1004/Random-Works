@@ -1,22 +1,27 @@
+import fs from 'fs';
+
 let combs = {};
 
-const operators = ["+", "-", "*", "/"];
+const operators = ["+", "-", "*", "/", "**"];
 
 /**
  * @typedef {object} findCombState
  * @property {string} expression
  * @property {"number"|"operator"} next
  * @property {number} numberUsed
- * @property {boolean} bracketOpened
+ * @property {number} bracketOpened
  * @property {boolean} isDone
  * @property {number} depth 
  */
 /** @param {findCombState} state */
 function findComb(state) {
-  state.depth++;
+  state = {
+    ...state,
+    depth: state.depth + 1
+  };
 
   if (state.isDone) {
-    if (state.bracketOpened === true) state.expression += ")"; // bracket fix
+    if (state.bracketOpened > 0) state.expression += ")".repeat(state.bracketOpened); // bracket fix
     let result = eval(state.expression); // evaluate
     if (!Number.isInteger(result) || result <= 0 || result > 10000) return; // ignore unexpected values
     if (typeof combs[result] === "undefined") combs[result] = [];
@@ -27,34 +32,38 @@ function findComb(state) {
   switch (state.next) {
     case "number":
       for (let i = 1; i <= 4-state.numberUsed; i++) {
-        const NUMBER_TO_ADD = "4".repeat(i);
-        let _numberUsed = state.numberUsed + i;
-        let _isDone = _numberUsed === 4;
-
-        let _state = {
-          ...state,
-          numberUsed: _numberUsed,
-          next: _isDone ? null : "operator",
-          isDone: _isDone,
-        };
-
-        findComb({
-          ..._state,
-          expression: state.expression + NUMBER_TO_ADD
-        });
-
-        if (_numberUsed !== 4) {
-          if (state.bracketOpened) {
+        for (let j = 0; j <= i; j++) {
+          let numberToAdd = "4".repeat(i);
+          if (i !== j) {
+            numberToAdd = numberToAdd.slice(0, j) + "." + numberToAdd.slice(j);
+          }
+          let _numberUsed = state.numberUsed + i;
+          let _isDone = _numberUsed === 4;
+  
+          let _state = {
+            ...state,
+            numberUsed: _numberUsed,
+            next: _isDone ? null : "operator",
+            isDone: _isDone,
+          };
+  
+          findComb({
+            ..._state,
+            expression: state.expression + numberToAdd
+          });
+  
+          if (_numberUsed !== 4) {
+            if (state.bracketOpened > 0) {
+              findComb({
+                ..._state,
+                expression: state.expression + numberToAdd + ")",
+                bracketOpened: state.bracketOpened - 1
+              });
+            }
             findComb({
               ..._state,
-              expression: state.expression + NUMBER_TO_ADD + ")",
-              bracketOpened: false
-            });
-          } else {
-            findComb({
-              ..._state,
-              expression: state.expression + "(" + NUMBER_TO_ADD,
-              bracketOpened: true
+              expression: state.expression + "(" + numberToAdd,
+              bracketOpened: state.bracketOpened + 1
             });
           }
         }
@@ -83,4 +92,4 @@ findComb({
 for (const n in combs) {
   combs[n] = [...new Set(combs[n])];
 }
-console.log(combs);
+fs.writeFile("./Scripts/fourfour.json", JSON.stringify(combs, null, 2), (err) => {if (err) console.log(err)});
