@@ -32,7 +32,7 @@ function findComb(state) {
   switch (state.next) {
     case "number":
       for (let i = 1; i <= 4-state.numberUsed; i++) {
-        for (let j = 0; j <= i; j++) {
+        for (let j = i; j >= 0; j--) {
           let numberToAdd = "4".repeat(i);
           if (i !== j) {
             numberToAdd = numberToAdd.slice(0, j) + "." + numberToAdd.slice(j);
