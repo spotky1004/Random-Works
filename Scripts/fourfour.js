@@ -90,6 +90,6 @@ findComb({
   depth: 0
 });
 for (const n in combs) {
-  combs[n] = [...new Set(combs[n])];
+  combs[n] = [...new Set(combs[n])].join(", ");
 }
 fs.writeFile("./Scripts/fourfour.json", JSON.stringify(combs, null, 2), (err) => {if (err) console.log(err)});
