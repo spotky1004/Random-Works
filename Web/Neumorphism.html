@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asdf</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+
+      font-size: 1.6vh;
+      font-family: 'DM Mono', monospace;
+
+      user-select: none;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background-color: #8cb81d;
+    }
+
+    @keyframes textShadowAppear {
+      from {
+        text-shadow:
+          0 0 0 #fff3,
+          0 0 0 #0003;
+      }
+      10% {
+      }
+      to {
+        text-shadow:
+          -0.2vh -0.2vh 1vh #fff3,
+          0.3vh 0.3vh 1vh #0003;
+      }
+    }
+
+    #text {
+      font-size: 10em;
+
+      color: #8cb81d;
+
+      animation: textShadowAppear 0.4s ease-out forwards;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="text">
+    Spotky
+  </div>
+  <script>
+    const textBox = document.getElementById("text");
+    let counter = 0;
+
+    textBox.innerText = (counter+"").padStart(4, "0");
+    textBox.onclick = function() {
+      textBox.style.animation = 'none';
+      textBox.offsetHeight; /* trigger reflow */
+      textBox.style.animation = null; 
+      counter++;
+      textBox.innerText = (counter+"").padStart(4, "0");
+    }
+  </script>
+</body>
+</html>
