@@ -62,7 +62,6 @@
     const textBox = document.getElementById("text");
     let counter = 0;
 
-    textBox.innerText = (counter+"").padStart(4, "0");
     textBox.onclick = function() {
       textBox.style.animation = 'none';
       textBox.offsetHeight; /* trigger reflow */
