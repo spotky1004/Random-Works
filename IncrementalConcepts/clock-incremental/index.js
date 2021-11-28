@@ -34,9 +34,10 @@ function updateCanvas() {
     ctx.fill();
   }
 
-  let prevMaxProgress;
+  let clockStats = getClockStats(game.clockUnlocked);
   for (let i = 0; i < game.clockUnlocked; i++) {
-    let maxProgress = (prevMaxProgress ?? 1) * 0.75**(game.clockProgressUpgrades[i]+1);
+    let maxProgress = clockStats[i].maxProgress;
+    if (maxProgress <= 0) continue;
     let maxProgressDeg = maxProgress * 2 * Math.PI;
 
     ctx.strokeStyle = `hsl(${300-300/game.maxClock*i}, 50%, 60%)`;
@@ -54,39 +55,60 @@ function updateCanvas() {
   }
 }
 
+function getClockStats(to) {
+  /**
+   * @typedef ClockStats
+   * @property {number} maxProgress
+   * @property {number} speed
+   */
+  /** @type {ClockStats[]} */
+  let stats = [];
+  let prevMaxProgress;
+  let divFactor = Array.from({ length: to }, (_, i) => i+1).reduce((a, b) => a*b, 1);
+  for (let i = 0; i < to; i++) {
+    const maxProgress = (prevMaxProgress ?? 1) * 0.75**(game.clockProgressUpgrades[i]+1)
+    stats.push({
+      maxProgress,
+      speed: 1/10 * game.clickBoost / divFactor
+    });
+    prevMaxProgress = maxProgress;
+    divFactor /= to-i;
+  }
+
+  stats[to-1].maxProgress = 0;
+  return stats;
+}
+
 let game = {
   lastTick: new Date().getTime(),
   clickBoost: 1,
   clockProgresses: new Array(100).fill(0),
   clockProgressUpgrades: new Array(100).fill(0),
-  clockUnlocked: 3,
+  clockUnlocked: 5,
   maxClock: 10,
   point: 0
 };
 function update() {
   let timeNow = new Date().getTime();
   let dt = timeNow - game.lastTick;
+  dt = Math.min(60*1000, dt);
   game.lastTick = timeNow;
 
   game.clickBoost = 1 + ((game.clickBoost - 1) * 0.8**(dt/1000));
 
-  let clockProgressPerSec = 1/20 * game.clickBoost;
-  let prevMaxProgress;
+  const clockStats = getClockStats(game.clockUnlocked);
   for (let i = 0; i < game.clockUnlocked; i++) {
-    let maxProgress = (prevMaxProgress ?? 1) * 0.75**(game.clockProgressUpgrades[i]+1);
-    let maxProgressInv = 1-maxProgress;
+    let clockStat = clockStats[i];
 
-    game.clockProgresses[i] += (i+1) * dt*clockProgressPerSec/1000;
-    game.point += Math.floor(game.clockProgresses[i]/maxProgressInv);
-    if (game.clockProgresses[i] > maxProgressInv) {
+    game.clockProgresses[i] += dt*clockStat.speed/1000;
+    game.point += Math.floor(game.clockProgresses[i]/(1-clockStat.maxProgress));
+    if (game.clockProgresses[i] > (1-clockStat.maxProgress)) {
       if (i !== 0) {
         game.clockProgresses[i] = game.clockProgresses[i-1];
       } else {
         game.clockProgresses[i] = 0;
       }
     }
-
-    prevMaxProgress = maxProgress;
   }
 
   eles.point.innerText = game.point;

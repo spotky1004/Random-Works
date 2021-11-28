@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@300&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+
+  font-size: 1.6vh;
+  font-family: 'Azeret Mono', monospace;
+
+  user-select: none;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+}
+
+#item-grid-warpper {
+  --gridSize: 70vmin;
+
+  position: relative;
+  margin: 0 auto;
+
+  width: var(--gridSize);
+  height: var(--gridSize);
+
+  overflow: hidden;
+}
+#item-grid-overlay {
+  position: absolute;
+  margin: 0 auto;
+  
+  width: 100%;
+  height: 100%;
+
+  pointer-events: none;
+  z-index: 1;
+}
+#item-grid-overlay > .floting-item {
+  position: absolute;
+
+  --itemSize: calc(var(--gridSize) / 15);
+  
+  width: var(--itemSize);
+  height: var(--itemSize);
+  
+  transform: translate(-50%, -50%);
+  image-rendering: pixelated;
+  background-size: 100% 100%;
+  filter: drop-shadow(0 0 calc(var(--itemSize) / 3.5) #000);
+}
+#item-grid {
+  position: absolute;
+  margin: 0 auto;
+
+  width: 100%;
+  height: 100%;
+
+  box-shadow: 0 0 calc(var(--gridSize) / 50) #000 inset;
+
+  table-layout: fixed;
+  border-collapse: collapse;
+
+  z-index: 0;
+}
+
+.item-grid__cell {
+  --borderWidth: calc(var(--gridSize) / 500);
+
+  border: calc(var(--borderWidth)) solid #aaa;
+
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  cursor: pointer;
+
+  transition: 
+    background-color ease-out 0.15s,
+    opacity ease-out 0.15s;
+}
+.item-grid__cell.moving {
+  position: absolute;
+
+  width: calc(var(--gridSize) / 4);
+  height: calc(var(--gridSize) / 4);
+
+  opacity: 0.5;
+  background-color: #8f8;
+
+  pointer-events: none;
+
+  z-index: 1;
+}
