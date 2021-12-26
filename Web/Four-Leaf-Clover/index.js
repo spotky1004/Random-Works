@@ -66,6 +66,7 @@ class FieldItem {
   answerCheck() {
     if (this.isAnswer) {
       this.isFound = true;
+      canUseSpace = true;
       this.ele.classList.add("found");
       found++;
       if (found === FOUR_LEAF_CLOVER_COUNT) {
@@ -88,11 +89,11 @@ let isHolding = false;
 document.addEventListener("mousedown", () => isHolding = true);
 document.addEventListener("mouseup", () => isHolding = false);
 document.addEventListener("blur", () => isHolding = false);
-let spaceUsed = 0;
+let canUseSpace = true;
 document.addEventListener("keydown", (e) => {
   if (e.code === "Space") {
-    if (new Date().getTime() - spaceUsed > 60_000) {
-      spaceUsed = new Date().getTime();
+    if (canUseSpace) {
+      canUseSpace = false;
       for (let i = 0; i < fieldItems.length; i++) {
         fieldItems[i].relocate();
       }
