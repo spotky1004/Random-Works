@@ -57,12 +57,11 @@ body {
   z-index: 0 !important;
 }
 .field__item.found {
-  z-index: 10000;
   user-select: none;
   opacity: 0.6;
-
-  animation: foundAni 8s linear infinite;
+  z-index: 10000 !important;
   user-select: none;
+  animation: foundAni 8s linear infinite;
 }
 @keyframes foundAni {
   from {
