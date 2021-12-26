@@ -83,7 +83,7 @@ class FieldItem {
   }
 }
 
-const FOUR_LEAF_CLOVER_COUNT = 1;
+const FOUR_LEAF_CLOVER_COUNT = 10;
 let found = 0;
 /** @type {FieldItem[]} */
 let fieldItems = [];
