@@ -48,6 +48,13 @@ body {
   top: 0;
   left: 0;
   font-size: 2em;
+  z-index: 1;
+}
+.field__item.not-answer {
+  filter: grayscale(0.5);
+  opacity: 0.5;
+  user-select: none;
+  z-index: 0 !important;
 }
 .field__item.found {
   z-index: 10000;

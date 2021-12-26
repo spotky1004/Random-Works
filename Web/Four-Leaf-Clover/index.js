@@ -68,6 +68,11 @@ class FieldItem {
       this.isFound = true;
       canUseSpace = true;
       this.ele.classList.add("found");
+      for (let i = found*90; i < (found+1)*90; i++) {
+        const fieldItem = fieldItems[i];
+        if (fieldItem.isAnswer) continue;
+        fieldItem.ele.classList.add("not-answer");
+      }
       found++;
       if (found === FOUR_LEAF_CLOVER_COUNT) {
         alert("Congratulations, you found all 🍀!\nThanks for playing game!");
