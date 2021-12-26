@@ -34,6 +34,7 @@ class FieldItem {
     if (this.isFound) return;
 
     this.position = { x: Math.random()*0.8+0.05, y: Math.random()*0.8+0.05 };
+    this.ele.style.zIndex = Math.floor(Math.random() * 1000);
     this.updateElement();
   }
   
@@ -51,7 +52,7 @@ class FieldItem {
 
     const dist = Math.sqrt((this.position.x - from.x)**2 + (this.position.y - from.y)**2);
     const power = Math.sqrt(Math.max(0, 0.1-dist));
-    const deg = (Math.atan2(this.position.y - from.y, this.position.x - from.x)+Math.PI*3/2+Math.random()/10)%(Math.PI*2);
+    const deg = (Math.atan2(this.position.y - from.y, this.position.x - from.x)+Math.PI*3/2+Math.random()/4)%(Math.PI*2);
 
     this.position.x -= Math.sin(deg)*power/30;
     this.position.x = Math.max(0.05, Math.min(0.95, this.position.x));
@@ -67,14 +68,18 @@ class FieldItem {
       this.isFound = true;
       this.ele.classList.add("found");
       found++;
+      if (found === FOUR_LEAF_CLOVER_COUNT) {
+        alert("Congratulations, you found all 🍀!\nThanks for playing game!");
+      }
     }
   }
 }
 
+const FOUR_LEAF_CLOVER_COUNT = 1;
 let found = 0;
 /** @type {FieldItem[]} */
 let fieldItems = [];
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < FOUR_LEAF_CLOVER_COUNT*100; i++) {
   const isClover = i%100 === 0;
   fieldItems.push(new FieldItem(i, isClover ? "🍀" : "☘️", isClover));
 }
@@ -83,10 +88,14 @@ let isHolding = false;
 document.addEventListener("mousedown", () => isHolding = true);
 document.addEventListener("mouseup", () => isHolding = false);
 document.addEventListener("blur", () => isHolding = false);
+let spaceUsed = 0;
 document.addEventListener("keydown", (e) => {
   if (e.code === "Space") {
-    for (let i = 0; i < fieldItems.length; i++) {
-      fieldItems[i].relocate();
+    if (new Date().getTime() - spaceUsed > 60_000) {
+      spaceUsed = new Date().getTime();
+      for (let i = 0; i < fieldItems.length; i++) {
+        fieldItems[i].relocate();
+      }
     }
   }
 })
