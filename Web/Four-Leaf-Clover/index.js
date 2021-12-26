@@ -1,3 +1,5 @@
+const startTime = new Date().getTime();
+
 const field = document.getElementById("field");
 class FieldItem {
   /**
@@ -68,20 +70,20 @@ class FieldItem {
       this.isFound = true;
       canUseSpace = true;
       this.ele.classList.add("found");
-      for (let i = found*90; i < (found+1)*90; i++) {
+      for (let i = found*50; i < (found+1)*50; i++) {
         const fieldItem = fieldItems[i];
         if (fieldItem.isAnswer) continue;
         fieldItem.ele.classList.add("not-answer");
       }
       found++;
       if (found === FOUR_LEAF_CLOVER_COUNT) {
-        alert("Congratulations, you found all 🍀!\nThanks for playing game!");
+        alert("Congratulations, you found all 🍀!\nThanks for playing game!\nIt took " + ((new Date().getTime() - startTime)/1000).toFixed(2) + " Seconds");
       }
     }
   }
 }
 
-const FOUR_LEAF_CLOVER_COUNT = 10;
+const FOUR_LEAF_CLOVER_COUNT = 1;
 let found = 0;
 /** @type {FieldItem[]} */
 let fieldItems = [];
