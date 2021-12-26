@@ -66,7 +66,7 @@ class FieldItem {
   }
 
   answerCheck() {
-    if (this.isAnswer) {
+    if (!this.isFound && this.isAnswer) {
       this.isFound = true;
       canUseSpace = true;
       this.ele.classList.add("found");
