@@ -2,9 +2,9 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-const WAVE_COUNT = 60;
+const WAVE_COUNT = 40;
 const waveShifts = new Array(WAVE_COUNT).fill().map((_, i) => Math.random()*Math.PI*2);
-const waveSpeeds = new Array(WAVE_COUNT).fill().map((_, i) => 2*(i+1)*Math.random()/WAVE_COUNT);
+const waveSpeeds = new Array(WAVE_COUNT).fill().map((_, i) => 2*(i+1)*Math.random());
 const waveWeights = new Array(WAVE_COUNT).fill().map((_, i) => (i+1)/WAVE_COUNT**2);
 
 function update() {
@@ -24,7 +24,7 @@ function update() {
     const a = waveWeights[i];
     const p = waveShifts[i];
     for (let x = 0; x < WIDTH; x++) {
-      const value = a*Math.sin(p+(v*x*50+6*t)/1000);
+      const value = a*Math.sin(p+(v*x+6*t)/1000)**3;
       wave[x] += value;
     }
   }
@@ -32,7 +32,7 @@ function update() {
   ctx.beginPath();
   ctx.moveTo(0, HEIGHT);
   for (let i = 0; i < wave.length; i++) {
-    ctx.lineTo(i, HEIGHT/2 - wave[i]*HEIGHT/6);
+    ctx.lineTo(i, HEIGHT/2 - wave[i]*HEIGHT/8);
   }
   ctx.lineTo(WIDTH, HEIGHT);
   ctx.moveTo(0, HEIGHT);
