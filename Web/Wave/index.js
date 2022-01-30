@@ -32,7 +32,7 @@ function update() {
   ctx.beginPath();
   ctx.moveTo(0, HEIGHT);
   for (let i = 0; i < wave.length; i++) {
-    ctx.lineTo(i, HEIGHT/2 - wave[i]*HEIGHT/8);
+    ctx.lineTo(i*(1+1/wave.length), HEIGHT/2 - wave[i]*HEIGHT/8);
   }
   ctx.lineTo(WIDTH, HEIGHT);
   ctx.moveTo(0, HEIGHT);
