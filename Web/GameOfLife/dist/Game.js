@@ -49,7 +49,7 @@ export default class Game {
                     case "lifeColor":
                     case "deadColorFrom":
                     case "deadColorTo":
-                        if (Array.isArray(style) && style.length > 3 && isNumberArray(style)) {
+                        if (Array.isArray(style) && style.length >= 3 && isNumberArray(style)) {
                             colorConfig[key] = style.slice(0, 4);
                         }
                         break;
