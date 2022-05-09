@@ -58,6 +58,9 @@ button {
 #play-button {
   background-color: darkgreen;
 }
+#randomize-button {
+  background-color: purple;
+}
 #apply-button {
   background-color: orange;
 }
