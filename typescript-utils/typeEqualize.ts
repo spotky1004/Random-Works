@@ -1,3 +1,7 @@
+/**
+ * Equlize type
+ */
+
 interface TypeEnum {
   "string": string;
   "number": number;

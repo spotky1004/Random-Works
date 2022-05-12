@@ -1,3 +1,7 @@
+/**
+ * Generate type checker for js types
+ */
+
 interface TypeEnum {
   "string": string;
   "number": number;
