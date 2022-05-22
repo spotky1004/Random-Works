@@ -2,7 +2,7 @@
  * Equlize type
  */
 
-interface TypeEnum {
+ interface TypeEnum {
   "string": string;
   "number": number;
   "bigint": BigInt;
@@ -33,7 +33,7 @@ export default function typeEqualize<T>(source: T, target: any): T {
     if (typeof target !== "object") target = {};
 
     for (const key in source) {
-      target[key] = typeEqualize(source[key], target ?? target[key]);
+      target[key] = typeEqualize(source[key], target ? target[key] : undefined);
     }
   } else if (typeof source === "undefined") {
     target = target;
