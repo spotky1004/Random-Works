@@ -35,7 +35,7 @@ export default function typeEqualize<T>(source: T, target: any): T {
     if (typeof source !== "object") target = {};
 
     for (const key in source) {
-      target[key] = typeEqualize(source[key], target[key]);
+      target[key] = typeEqualize(source[key], target ?? target[key]);
     }
   } else if (typeof source === "undefined") {
     target = target;
