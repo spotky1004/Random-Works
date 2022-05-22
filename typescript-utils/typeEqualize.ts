@@ -25,14 +25,12 @@ export default function typeEqualize<T>(source: T, target: any): T {
   if (source === null) {
     target = null;
   } else if (Array.isArray(source)) {
-    if (typeof source !== "undefined") target = Array(source.length).fill(undefined);
     if (!Array.isArray(target)) target = [];
     for (let i = 0; i < Math.max(target.length, source.length); i++) {
       target[i] = typeEqualize(source[Math.min(source.length-1, i)], target[i] ?? target[0]);
     }
   } else if (typeof source === "object") {
-    if (typeof source === "undefined") target = Object.fromEntries(Object.keys(source).map(v => [v, undefined]));
-    if (typeof source !== "object") target = {};
+    if (typeof target !== "object") target = {};
 
     for (const key in source) {
       target[key] = typeEqualize(source[key], target ?? target[key]);
