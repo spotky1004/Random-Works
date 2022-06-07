@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./build/index.js" type="module"></script>
+  <link rel="stylesheet" href="./index.css">
+  <title>Tree</title>
+</head>
+<body>
+  <canvas id="canvas">
+    
+  </canvas>
+  <div id="forms">
+    <div id="file-select-wrapper">
+      Log File: <input id="file-select" type="file" accept=".json">
+    </div>
+    <div id="search-wrapper">
+      Search: <input id="search-box" type="text" hint="node to search...">
+    </div>
+  </div>
+  <div id="help-text">
+    <div class="help-text__block">
+      <span class="help-text__command">Wheel</span>: Zoom Screen
+    </div>
+    <div class="help-text__block">
+      <span class="help-text__command">Whell + Hold node</span>: Zoom Node
+    </div>
+    <div class="help-text__block">
+      <span class="help-text__command">Drag</span>: Move Screen
+    </div>
+    <div class="help-text__block">
+      <span class="help-text__command">Drag + Hold node</span>: Move Node
+    </div>
+  </div>
+</body>
+</html>
