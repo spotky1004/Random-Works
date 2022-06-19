@@ -1,23 +1,22 @@
 import keyToNodeDatas, { NodeDatas } from "./keyToNodeDatas.js";
-import type { AssemblyName } from "../class/Node.js";
 
 interface RawNode {
   isUsedBy: string[];
   dependsOn: string[];
 }
-type LogJson = { [typeName: string]: RawNode };
+type LogJson = { [fileName: string]: RawNode };
 
 export interface ParsedNode {
-  nodeName: string;
-  typeName: string;
-  assemblyName: AssemblyName;
+  nodeKey: string;
+  fileName: string;
+  assemblyName: string;
   isUsedBy: ParsedNode[];
   dependsOn: ParsedNode[];
 }
 export type ParsedLog = { [typeName: string]: ParsedNode };
 
-function nodeDatasToNodeName(nodeDatas: NodeDatas) {
-  return nodeDatas.typeName + "_" + nodeDatas.assemblyName;
+function nodeDatasToNodeKey(nodeDatas: NodeDatas) {
+  return nodeDatas.fileName + "_" + nodeDatas.assemblyName;
 }
 
 export default function logParser(logJson: LogJson): ParsedLog {
@@ -26,11 +25,11 @@ export default function logParser(logJson: LogJson): ParsedLog {
   // Init nodes
   for (const key in logJson) {
     const nodeDatas = keyToNodeDatas(key);
-    const nodeName = nodeDatasToNodeName(nodeDatas);
-    parsed[nodeName] = {
-      nodeName: nodeName,
-      typeName: nodeDatas.typeName,
-      assemblyName: nodeDatas.assemblyName as AssemblyName,
+    const nodeKey = nodeDatasToNodeKey(nodeDatas);
+    parsed[nodeKey] = {
+      nodeKey: nodeKey,
+      fileName: nodeDatas.fileName,
+      assemblyName: nodeDatas.assemblyName,
       isUsedBy: [],
       dependsOn: []
     };
@@ -39,19 +38,19 @@ export default function logParser(logJson: LogJson): ParsedLog {
   // Add isUsedBy & dependsOn
   for (const key in logJson) {
     const nodeDatas = keyToNodeDatas(key);
-    const nodeName = nodeDatasToNodeName(nodeDatas);
-    const node = parsed[nodeName];
+    const nodeKey = nodeDatasToNodeKey(nodeDatas);
+    const node = parsed[nodeKey];
     const { isUsedBy, dependsOn } = logJson[key];
 
     for (let i = 0; i < isUsedBy.length; i++) {
       const _nodeDatas = keyToNodeDatas(isUsedBy[i]);
-      const _nodeName = nodeDatasToNodeName(_nodeDatas);
-      node.isUsedBy.push(parsed[_nodeName]);
+      const _nodeKey = nodeDatasToNodeKey(_nodeDatas);
+      node.isUsedBy.push(parsed[_nodeKey]);
     }
     for (let i = 0; i < dependsOn.length; i++) {
       const _nodeDatas = keyToNodeDatas(dependsOn[i]);
-      const _nodeName = nodeDatasToNodeName(_nodeDatas);
-      node.dependsOn.push(parsed[_nodeName]);
+      const _nodeKey = nodeDatasToNodeKey(_nodeDatas);
+      node.dependsOn.push(parsed[_nodeKey]);
     }
 
     Object.freeze(node);

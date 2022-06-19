@@ -1,23 +1,22 @@
 import type { ParsedNode } from "../util/logParser";
 
-export type AssemblyName = "Assembly-CSharp" | "Assembly-CSharp-Firstpass";
-type LineTypes = "isUsedBy" | "dependsOn";
+export type LineTypes = "isUsedBy" | "dependsOn";
 
 export default class Node {
-  name: string;
-  typeName: string;
-  assemblyName: AssemblyName;
-  isUsedBy: Node[];
-  dependsOn: Node[];
-  attr: { x: number; y: number, size: number };
+  readonly nodeKey: string;
+  readonly fileName: string;
+  readonly assemblyName: string;
+  readonly isUsedBy: Node[];
+  readonly dependsOn: Node[];
+  readonly attr: { x: number; y: number, size: number, color: string };
 
-  constructor(data: ParsedNode) {
-    this.name = data.nodeName;
-    this.typeName = data.typeName;
+  constructor(data: ParsedNode, color: string) {
+    this.nodeKey = data.nodeKey;
+    this.fileName = data.fileName;
     this.assemblyName = data.assemblyName;
     this.isUsedBy = [];
     this.dependsOn = [];
-    this.attr = { x: 0, y: 0, size: 60 };
+    this.attr = { x: 0, y: 0, size: 60, color };
   }
 
   addLine(type: LineTypes, node: Node) {

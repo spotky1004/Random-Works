@@ -31,10 +31,23 @@ export default class AppEventsManager {
         document.addEventListener("blur", () => {
             this.resetEventDatas();
         });
+        this.canvas.addEventListener("mouseleave", () => {
+            this.holding = false;
+            this.holdingNode = undefined;
+            this.app.render();
+        });
+        document.addEventListener("keydown", (e) => {
+            this.keydown(e.key);
+        });
         this.canvas.addEventListener("mousedown", (e) => {
             this.holding = true;
             const globalPos = this.pixelPosToGlobalPos(this.canvas.width, this.canvas.height, e.offsetX, e.offsetY);
             this.holdingNode = this.app.nodeManager.getNodeByPosition(globalPos.x, globalPos.y);
+            if (this.holdingNode) {
+                const nodeList = this.app.nodeManager.nodeList;
+                nodeList.scrollToNode(this.holdingNode);
+                nodeList.openNodeInfo(this.holdingNode);
+            }
             this.app.render();
         });
         this.canvas.addEventListener("mouseup", () => {
@@ -44,7 +57,7 @@ export default class AppEventsManager {
         });
         this.canvas.addEventListener("mousemove", (e) => {
             const to = this.pixelPosToGlobalPos(this.canvas.width, this.canvas.height, e.offsetX, e.offsetY);
-            this.mouseMove(to);
+            this.mousemove(to);
         });
         this.canvas.addEventListener("wheel", (e) => {
             this.wheel(e.deltaY);
@@ -70,6 +83,17 @@ export default class AppEventsManager {
             });
             fileReader.readAsText(file);
         });
+        this.app.changeLayoutBtn.addEventListener("click", () => {
+            this.app.nodeManager.changeLayout();
+        });
+        this.app.searchBox.addEventListener("keydown", () => {
+            this.app.nodeManager.nodeList.applySearch(this.app.searchBox.value);
+            this.app.render();
+        });
+        this.app.searchBox.addEventListener("change", () => {
+            this.app.nodeManager.nodeList.applySearch(this.app.searchBox.value);
+            this.app.render();
+        });
     }
     tick() {
         const camera = this.app.canvas.camera;
@@ -81,8 +105,12 @@ export default class AppEventsManager {
             this.screenMovingSpeed.y *= 0.95;
             this.app.render();
         }
+        else {
+            this.screenMovingSpeed.x = 0;
+            this.screenMovingSpeed.y = 0;
+        }
     }
-    mouseMove(to) {
+    mousemove(to) {
         const from = this.prevMousePos;
         const dl = {
             x: to.x - from.x,
@@ -101,17 +129,27 @@ export default class AppEventsManager {
         }
     }
     wheel(dy) {
+        const camera = this.app.canvas.camera;
+        let prevZoom = camera.zoom;
+        camera.zoom *= 1.01 ** (-dy / 8);
+        camera.x -= (1 / camera.zoom - 1 / prevZoom) / 2;
+        camera.y -= (1 / camera.zoom - 1 / prevZoom) / 2;
+        this.app.render();
+    }
+    keydown(key) {
         if (this.holdingNode) {
             const node = this.holdingNode;
-            node.attr.size *= 1.005 ** (-dy / 8);
-            this.app.render();
-        }
-        else {
-            const center = this.prevMousePos;
-            const camera = this.app.canvas.camera;
-            camera.x = (camera.x * 9 / 10 + center.x / 10) / 2;
-            camera.zoom *= 1.01 ** (-dy / 8);
-            this.app.render();
+            let scale = 1;
+            if (key === "-" || key === "_") {
+                scale /= 1.05;
+            }
+            else if (key === "=" || key === "+") {
+                scale *= 1.05;
+            }
+            if (scale !== 1) {
+                node.attr.size *= scale;
+                this.app.render();
+            }
         }
     }
     resetEventDatas() {

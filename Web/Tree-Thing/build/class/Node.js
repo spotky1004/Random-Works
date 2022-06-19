@@ -1,11 +1,11 @@
 export default class Node {
-    constructor(data) {
-        this.name = data.nodeName;
-        this.typeName = data.typeName;
+    constructor(data, color) {
+        this.nodeKey = data.nodeKey;
+        this.fileName = data.fileName;
         this.assemblyName = data.assemblyName;
         this.isUsedBy = [];
         this.dependsOn = [];
-        this.attr = { x: 0, y: 0, size: 60 };
+        this.attr = { x: 0, y: 0, size: 60, color };
     }
     addLine(type, node) {
         this[type].push(node);

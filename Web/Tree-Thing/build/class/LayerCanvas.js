@@ -1,5 +1,5 @@
 export default class LayerCanvas {
-    constructor(layerCount, canvas) {
+    constructor(layerNames, canvas) {
         this.canvas = canvas;
         const ctx = this.canvas.getContext("2d");
         if (!ctx) {
@@ -7,7 +7,8 @@ export default class LayerCanvas {
         }
         this.ctx = ctx;
         this.layers = [];
-        for (let i = 0; i < layerCount; i++) {
+        this.layerNames = layerNames;
+        for (let i = 0; i < layerNames.length; i++) {
             this.createLayer();
         }
     }
@@ -31,8 +32,8 @@ export default class LayerCanvas {
     getAllLayers() {
         return [...this.layers];
     }
-    getLayer(idx) {
-        return this.layers[idx];
+    getLayer(name) {
+        return this.layers[this.layerNames.findIndex(n => n === name)];
     }
     mergeLayers(width, height) {
         this.canvas.width = width;

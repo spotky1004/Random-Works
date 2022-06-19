@@ -1,10 +1,17 @@
 import App from "./class/App.js";
+import logParser from "./util/logParser.js";
 const app = new App({
     canvas: document.getElementById("canvas"),
-    searchBox: document.getElementById("search-box"),
-    fileSelect: document.getElementById("file-select")
+    searchInput: document.getElementById("search-input"),
+    fileSelect: document.getElementById("file-select"),
+    changeLayoutBtn: document.getElementById("change-layout"),
+    nodeListEl: document.getElementById("node-list"),
 });
 app.render();
+window.fetch("/examples/simple.txt")
+    .then(b => b.json())
+    .then(json => app.readParsedLog(logParser(json)))
+    .catch(_ => console.error(_));
 let prevWindowSize = {
     x: innerWidth,
     y: innerHeight

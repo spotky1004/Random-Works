@@ -4,7 +4,7 @@ export default function localAttrToGlobalAttr(localPos, cameraAttr) {
     const globalAttr = {
         x: (localX - cameraX) * zoom * Math.min(width, height),
         y: (localY - cameraY) * zoom * Math.min(width, height),
-        size: size ? size * zoom * Math.min(width, height) : undefined
+        size: size * zoom * Math.min(width, height)
     };
     if (width > height) {
         globalAttr.x += (width - height) / 2;

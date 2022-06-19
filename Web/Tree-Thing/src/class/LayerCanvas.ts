@@ -3,12 +3,13 @@ interface Layer {
   ctx: CanvasRenderingContext2D;
 }
 
-export default class LayerCanvas {
-  canvas: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D;
+export default class LayerCanvas<L extends readonly string[]> {
+  readonly canvas: HTMLCanvasElement;
+  readonly ctx: CanvasRenderingContext2D;
   private layers: Layer[];
+  private layerNames: L;
 
-  constructor(layerCount: number, canvas: HTMLCanvasElement) {
+  constructor(layerNames: L, canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     const ctx = this.canvas.getContext("2d");
     if (!ctx) {
@@ -16,7 +17,8 @@ export default class LayerCanvas {
     }
     this.ctx = ctx;
     this.layers = [];
-    for (let i = 0; i < layerCount; i++) {
+    this.layerNames = layerNames;    
+    for (let i = 0; i < layerNames.length; i++) {
       this.createLayer();
     }
   }
@@ -44,8 +46,8 @@ export default class LayerCanvas {
     return [...this.layers];
   }
 
-  getLayer(idx: number): Layer | undefined {
-    return this.layers[idx];
+  getLayer(name: L[number]): Layer {
+    return this.layers[this.layerNames.findIndex(n => n === name)];
   }
 
   mergeLayers(width: number, height: number) {
