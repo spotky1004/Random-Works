@@ -15,11 +15,6 @@ window.fetch("./examples/simple.txt")
   .then(json => app.readParsedLog(logParser(json)))
   .catch(_ => console.error(_));
 
-window.fetch("./Web/Tree-Thing/examples/simple.txt")
-  .then(b => b.json())
-  .then(json => app.readParsedLog(logParser(json)))
-  .catch(_ => console.error(_));
-
 let prevWindowSize: Position = {
   x: innerWidth,
   y: innerHeight
