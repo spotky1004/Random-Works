@@ -8,7 +8,11 @@ const app = new App({
     nodeListEl: document.getElementById("node-list"),
 });
 app.render();
-window.fetch("/examples/simple.txt")
+window.fetch("./examples/simple.txt")
+    .then(b => b.json())
+    .then(json => app.readParsedLog(logParser(json)))
+    .catch(_ => console.error(_));
+window.fetch("./Web/Tree-Thing/examples/simple.txt")
     .then(b => b.json())
     .then(json => app.readParsedLog(logParser(json)))
     .catch(_ => console.error(_));
