@@ -7,7 +7,8 @@ export default class AppEventsManager {
   private readonly canvas: HTMLCanvasElement;
   holding: boolean;
   holdingNode: Node | undefined;
-  private prevMousePos: Position;
+  moveStartPos: Position;
+  prevMousePos: Position;
   private screenMovingSpeed: Position;
 
   constructor(app: App, canvas: HTMLCanvasElement) {
@@ -15,6 +16,7 @@ export default class AppEventsManager {
     this.canvas = canvas;
     this.holding = false;
     this.holdingNode = undefined;
+    this.moveStartPos = { x: 0, y: 0 };
     this.prevMousePos = { x: 0, y: 0 };
     this.screenMovingSpeed = { x: 0, y: 0 };
     this.init();

@@ -95,11 +95,11 @@ export default class Particle {
     return Math.abs(xc - x) < rc && Math.abs(yc - y) < rc;
   }
 
-  isCollisionWith(particle: Particle) {
+  isCollisionWith(particle: Particle, hitboxMultiplier: number=1) {
     const { x: x1, y: y1 } = this;
-    const r1 = this.size/2;
+    const r1 = this.size/2 * hitboxMultiplier;
     const { x: x2, y: y2 } = particle;
-    const r2 = particle.size/2;
+    const r2 = particle.size/2 * hitboxMultiplier;
     return Math.abs(x1 - x2) < r1 + r2 && Math.abs(y1 - y2) < r1 + r2;
   }
 }
