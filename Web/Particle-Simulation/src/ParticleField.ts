@@ -1,6 +1,6 @@
 import type Particle from "./Particle";
 
-const HITBOX_MULT = 0.85;
+const HITBOX_MULT = 0.97;
 
 export default class ParticleField {
   readonly particles: Particle[] = [];
@@ -43,7 +43,7 @@ export default class ParticleField {
         if (p2.threshold < p1.mass * p1.velocity.getSize()) p2.velocity = p2v;
         
         const theta = p1.getThetaWith(p2);
-        const l = (p1.size/2 + p2.size/2) * HITBOX_MULT;
+        const l = (p1.size/2 + p2.size/2) * HITBOX_MULT * 1.1;
         // asdf
         if (p1.moved) {
           p1.x = p2.x + l * Math.cos(theta);
