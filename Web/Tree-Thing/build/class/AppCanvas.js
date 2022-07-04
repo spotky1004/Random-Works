@@ -128,12 +128,61 @@ export default class AppCanvas {
         lineCtx.lineTo(xEnd - arrawHeadLength * Math.cos(deg - Math.PI / 8), yEnd - arrawHeadLength * Math.sin(deg - Math.PI / 8));
         lineCtx.stroke();
     }
+    drawInfoTexts(canvasAttr) {
+        const stats = this.app.nodeManager.stats;
+        const statsArr = Object.entries(stats);
+        const infoCtx = this.canvas.getLayer("info").ctx;
+        const infoTextOptions = {
+            text: "",
+            x: Math.max(0.99, (canvasAttr.width / canvasAttr.height - 1) / 2 + (1 - 0.03)),
+            y: 0,
+            ignoreCamera: true,
+            canvasAttr,
+            color: "#fff8",
+            ctx: infoCtx,
+            baseline: "bottom",
+            textAlign: "right",
+            maxSize: 0.016,
+        };
+        for (let i = 0; i < statsArr.length; i++) {
+            const [name, value] = statsArr[i];
+            const valueTxt = typeof value === "number" ? (Math.floor(value * 10000) / 10000) + "" : value;
+            this.fillText({
+                ...infoTextOptions,
+                text: `${name}: ${valueTxt}`,
+                y: 0.94 - 0.03 * (statsArr.length - i)
+            });
+        }
+    }
+    drawSelectedSquare(canvasAttr) {
+        const eventsManager = this.app.eventsManager;
+        const { holdSpaceStartPos, holdSpaceEndPos } = eventsManager;
+        if (!holdSpaceStartPos || !holdSpaceEndPos)
+            return;
+        const { x: x1, y: y1 } = localAttrToGlobalAttr(holdSpaceStartPos, canvasAttr);
+        const { x: x2, y: y2 } = localAttrToGlobalAttr(holdSpaceEndPos, canvasAttr);
+        const infoCtx = this.canvas.getLayer("info").ctx;
+        infoCtx.save();
+        infoCtx.globalAlpha = 0.3;
+        infoCtx.fillStyle = "#fff";
+        infoCtx.fillRect(x1, y1, x2 - x1, y2 - y1);
+        infoCtx.restore();
+    }
     fillText(options) {
-        const { ctx, canvasAttr, ignoreCamera, text, color, x, y, maxSize = Infinity, maxWidth = Infinity, baseline = "alphabetic", textAlign = "left" } = options;
+        const { ctx, ignoreCamera, text, color, x, y, maxSize = Infinity, maxWidth = Infinity, baseline = "alphabetic", textAlign = "left" } = options;
+        const canvasAttr = !ignoreCamera ?
+            options.canvasAttr :
+            {
+                x: 0,
+                y: 0,
+                width: options.canvasAttr.width,
+                height: options.canvasAttr.height,
+                zoom: 1
+            };
         ctx.save();
         const localAttr1 = { x, y, size: maxWidth };
         const localAttr2 = { x, y, size: maxSize };
-        const globalAttr = !ignoreCamera ? localAttrToGlobalAttr(localAttr1, canvasAttr) : localAttr1;
+        const globalAttr = localAttrToGlobalAttr(localAttr1, canvasAttr);
         const fontSize = Math.min(globalAttr.size / text.length * 3, localAttrToGlobalAttr(localAttr2, canvasAttr).size);
         ctx.fillStyle = color;
         ctx.textBaseline = baseline;
@@ -167,6 +216,8 @@ export default class AppCanvas {
                 canvasAttr
             });
         }
+        this.drawSelectedSquare(canvasAttr);
+        this.drawInfoTexts(canvasAttr);
         this.canvas.mergeLayers(WIDTH, HEIGHT);
     }
 }

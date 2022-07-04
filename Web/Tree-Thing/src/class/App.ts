@@ -42,8 +42,8 @@ export default class App {
     if (searchQuery.length > 0) {
       highlightNodes.push(...this.nodeManager.nodes.filter(node => node.fileName.toLowerCase().includes(searchQuery.toLowerCase())));
     }
-    if (this.eventsManager.holdingNode) {
-      highlightNodes.push(this.eventsManager.holdingNode);
+    if (this.eventsManager.selectedNodes) {
+      highlightNodes.push(...this.eventsManager.selectedNodes);
     }
     this.canvas.render(highlightNodes);
   }

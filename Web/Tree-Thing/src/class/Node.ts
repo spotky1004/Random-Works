@@ -26,4 +26,13 @@ export default class Node {
   isSpotInNode(x: number, y: number): boolean {
     return Math.sqrt((this.attr.x-x)**2 + (this.attr.y-y)**2) < this.attr.size;
   }
+
+  isNodeInRect(x1: number, y1: number, x2: number, y2: number) {
+    const { x, y } = this.attr;
+
+    const xIn = x1 < x && x < x2;
+    const yIn = y1 < y && y < y2;
+    
+    return xIn && yIn;
+  }
 }

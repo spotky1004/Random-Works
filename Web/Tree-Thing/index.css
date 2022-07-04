@@ -300,6 +300,28 @@ input::placeholder {
 #node-info__depends-on > *, #node-info__is-used-by > * {
   user-select: text;
 }
+#node-info__depends-on-divider, #node-info__is-used-by-divider {
+  padding-left: 2.5%;
+
+  color: #444;
+  font-size: 1.5em;
+}
+#node-info__depends-on-divider {
+  background: linear-gradient(
+    90deg,
+    #e3931b 0%,
+    #e3931b 20%,
+    #0000 80%
+  );
+}
+#node-info__is-used-by-divider {
+  background: linear-gradient(
+    90deg,
+    #54e31b 0%,
+    #54e31b 20%,
+    #0000 80%
+  );
+}
 #node-info__depends-on {
   color: #e3931b;
 }

@@ -17,7 +17,15 @@ export default class NodeList {
         generalNodeInfo.appendChild(this.nodeInfoEls.lineCount[0]);
         generalNodeInfo.appendChild(document.createTextNode("/"));
         generalNodeInfo.appendChild(this.nodeInfoEls.lineCount[1]);
+        const dependsOnDivider = document.createElement("div");
+        dependsOnDivider.id = "node-info__depends-on-divider";
+        dependsOnDivider.innerHTML = "Depends On";
+        nodeInfo.appendChild(dependsOnDivider);
         nodeInfo.appendChild(this.nodeInfoEls.dependsOn);
+        const isUsedByDivider = document.createElement("div");
+        isUsedByDivider.innerHTML = "Is Used By";
+        isUsedByDivider.id = "node-info__is-used-by-divider";
+        nodeInfo.appendChild(isUsedByDivider);
         nodeInfo.appendChild(this.nodeInfoEls.isUsedBy);
         this.nodeInfoEls.dependsOn.id = "node-info__depends-on";
         this.nodeInfoEls.isUsedBy.id = "node-info__is-used-by";

@@ -4,9 +4,13 @@ export default class AppEventsManager {
         this.app = app;
         this.canvas = canvas;
         this.holding = false;
-        this.holdingNode = undefined;
+        this.selectedNodes = [];
         this.prevMousePos = { x: 0, y: 0 };
         this.screenMovingSpeed = { x: 0, y: 0 };
+        this.holdSpaceStartPos = null;
+        this.holdSpaceEndPos = null;
+        this.holdingSpace = false;
+        this.rmbHoldPos = null;
         this.init();
     }
     pixelPosToGlobalPos(width, height, x, y) {
@@ -30,34 +34,76 @@ export default class AppEventsManager {
     init() {
         document.addEventListener("blur", () => {
             this.resetEventDatas();
-        });
-        this.canvas.addEventListener("mouseleave", () => {
-            this.holding = false;
-            this.holdingNode = undefined;
             this.app.render();
         });
-        document.addEventListener("keydown", (e) => {
-            this.keydown(e.key);
+        this.canvas.addEventListener("mouseleave", () => {
+            this.resetEventDatas();
+            this.app.render();
         });
         this.canvas.addEventListener("mousedown", (e) => {
-            this.holding = true;
+            let isRightClick = false;
+            if ("witch" in e) {
+                isRightClick = e.which === 3;
+            }
+            else if ("button" in e) {
+                isRightClick = e.button === 2;
+            }
             const globalPos = this.pixelPosToGlobalPos(this.canvas.width, this.canvas.height, e.offsetX, e.offsetY);
-            this.holdingNode = this.app.nodeManager.getNodeByPosition(globalPos.x, globalPos.y);
-            if (this.holdingNode) {
-                const nodeList = this.app.nodeManager.nodeList;
-                nodeList.scrollToNode(this.holdingNode);
-                nodeList.openNodeInfo(this.holdingNode);
+            if (!isRightClick) {
+                this.holding = true;
+                const selectedNode = this.app.nodeManager.getNodeByPosition(globalPos.x, globalPos.y);
+                if (selectedNode) {
+                    this.selectedNodes.push(selectedNode);
+                    const nodeList = this.app.nodeManager.nodeList;
+                    nodeList.scrollToNode(this.selectedNodes[0]);
+                    nodeList.openNodeInfo(this.selectedNodes[0]);
+                }
+            }
+            else {
+                this.rmbHoldPos = { x: globalPos.x, y: globalPos.y };
+                this.rmbHoldMove(globalPos);
             }
             this.app.render();
         });
-        this.canvas.addEventListener("mouseup", () => {
-            this.holding = false;
-            this.holdingNode = undefined;
+        this.canvas.addEventListener("mouseup", (e) => {
+            let isRightClick = false;
+            if ("witch" in e) {
+                isRightClick = e.which === 3;
+            }
+            else if ("button" in e) {
+                isRightClick = e.button === 2;
+            }
+            if (!isRightClick) {
+                this.holding = false;
+                this.selectedNodes = [];
+                this.holdSpaceStartPos = null;
+                this.holdSpaceEndPos = null;
+            }
+            else {
+                this.rmbHoldPos = null;
+            }
             this.app.render();
         });
         this.canvas.addEventListener("mousemove", (e) => {
+            let isRightClick = false;
+            if ("witch" in e) {
+                isRightClick = e.which === 3;
+            }
+            else if ("button" in e) {
+                isRightClick = e.buttons === 2 || e.buttons === 3;
+            }
             const to = this.pixelPosToGlobalPos(this.canvas.width, this.canvas.height, e.offsetX, e.offsetY);
-            this.mousemove(to);
+            if (!isRightClick) {
+                this.mousemove(to);
+            }
+            else {
+                this.rmbHoldMove(to);
+            }
+        });
+        this.canvas.addEventListener("contextmenu", (e) => {
+            e.preventDefault();
+            const to = this.pixelPosToGlobalPos(this.canvas.width, this.canvas.height, e.offsetX, e.offsetY);
+            this.rmbHoldMove(to);
         });
         this.canvas.addEventListener("wheel", (e) => {
             this.wheel(e.deltaY);
@@ -86,6 +132,22 @@ export default class AppEventsManager {
         this.app.changeLayoutBtn.addEventListener("click", () => {
             this.app.nodeManager.changeLayout();
         });
+        window.addEventListener("keydown", (e) => {
+            if (e.key === " " && !this.holdingSpace) {
+                this.holdSpaceStartPos = { ...this.prevMousePos };
+                this.holdSpaceEndPos = { ...this.prevMousePos };
+                this.holdingSpace = true;
+            }
+            this.app.render();
+        });
+        window.addEventListener("keyup", (e) => {
+            if (e.key === " " && this.holdingSpace) {
+                this.holdSpaceStartPos = null;
+                this.holdSpaceEndPos = null;
+                this.holdingSpace = false;
+            }
+            this.app.render();
+        });
         this.app.searchBox.addEventListener("keydown", () => {
             this.app.nodeManager.nodeList.applySearch(this.app.searchBox.value);
             this.app.render();
@@ -110,6 +172,19 @@ export default class AppEventsManager {
             this.screenMovingSpeed.y = 0;
         }
     }
+    getSelectRect() {
+        if (this.holdSpaceStartPos && this.holdSpaceEndPos) {
+            return {
+                x1: Math.min(this.holdSpaceStartPos.x, this.holdSpaceEndPos.x),
+                y1: Math.min(this.holdSpaceStartPos.y, this.holdSpaceEndPos.y),
+                x2: Math.max(this.holdSpaceStartPos.x, this.holdSpaceEndPos.x),
+                y2: Math.max(this.holdSpaceStartPos.y, this.holdSpaceEndPos.y),
+            };
+        }
+        else {
+            return null;
+        }
+    }
     mousemove(to) {
         const from = this.prevMousePos;
         const dl = {
@@ -117,16 +192,41 @@ export default class AppEventsManager {
             y: to.y - from.y
         };
         this.prevMousePos = { ...to };
-        if (this.holdingNode) {
-            const node = this.holdingNode;
-            node.attr.x += dl.x;
-            node.attr.y += dl.y;
+        if (this.holdingSpace) {
+            this.holdSpaceEndPos = { ...this.prevMousePos };
+        }
+        const selectedRect = this.getSelectRect();
+        if (this.holdingSpace && selectedRect) {
+            const { x1, y1, x2, y2 } = selectedRect;
+            const selectedNodes = this.app.nodeManager.nodes.filter(node => node.isNodeInRect(x1, y1, x2, y2));
+            this.selectedNodes = selectedNodes;
+        }
+        if (this.selectedNodes.length > 0) {
+            if (!this.holdingSpace) {
+                for (const node of this.selectedNodes) {
+                    node.attr.x += dl.x;
+                    node.attr.y += dl.y;
+                }
+            }
             this.app.render();
         }
         else if (this.holding) {
             this.screenMovingSpeed.x -= dl.x / 10;
             this.screenMovingSpeed.y -= dl.y / 10;
         }
+    }
+    rmbHoldMove(to) {
+        if (!this.rmbHoldPos)
+            return;
+        const dx = to.x - this.rmbHoldPos.x;
+        const dy = to.y - this.rmbHoldPos.y;
+        const dl = Math.sqrt(dx * dx + dy * dy);
+        for (const node of this.selectedNodes) {
+            node.attr.size += dl * -Math.sign(dy);
+            node.attr.size = Math.max(node.attr.size, (1 / this.app.canvas.camera.zoom) / 100);
+        }
+        this.rmbHoldPos = to;
+        this.app.render();
     }
     wheel(dy) {
         const camera = this.app.canvas.camera;
@@ -137,24 +237,29 @@ export default class AppEventsManager {
         this.app.render();
     }
     keydown(key) {
-        if (this.holdingNode) {
-            const node = this.holdingNode;
-            let scale = 1;
-            if (key === "-" || key === "_") {
-                scale /= 1.05;
-            }
-            else if (key === "=" || key === "+") {
-                scale *= 1.05;
-            }
-            if (scale !== 1) {
-                node.attr.size *= scale;
-                this.app.render();
+        if (this.selectedNodes.length > 0) {
+            for (const node of this.selectedNodes) {
+                let scale = 1;
+                if (key === "-" || key === "_") {
+                    scale /= 1.05;
+                }
+                else if (key === "=" || key === "+") {
+                    scale *= 1.05;
+                }
+                if (scale !== 1) {
+                    node.attr.size *= scale;
+                    this.app.render();
+                }
             }
         }
     }
     resetEventDatas() {
         this.holding = false;
-        this.holdingNode = undefined;
+        this.selectedNodes = [];
+        this.holdSpaceStartPos = null;
+        this.holdSpaceEndPos = null;
+        this.holdingSpace = false;
         this.prevMousePos = { x: 0, y: 0 };
+        this.rmbHoldPos = null;
     }
 }

@@ -73,7 +73,7 @@ export default class Particle {
     const sint = Math.sin(theta);
     const cost = Math.cos(theta);
 
-    const v1xp = (m1-e1*m2)/(m1+m2)*(v1x*cost+v1y*sint) + (m2+e1*m2)/(m1+m2)*(v2x-cost+v2y*sint);
+    const v1xp = (m1-e1*m2)/(m1+m2)*(v1x*cost+v1y*sint) + (m2+e1*m2)/(m1+m2)*(v2x*cost+v2y*sint);
     const v2xp = (m1+e2*m1)/(m1+m2)*(v1x*cost+v1y*sint) + (m2-e2*m1)/(m1+m2)*(v2x*cost+v2y*sint);
     const v1yp = v1y*cost - v1x*sint;
     const v2yp = v2y*cost - v2x*sint;

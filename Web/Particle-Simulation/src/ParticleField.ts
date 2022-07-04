@@ -1,6 +1,6 @@
 import type Particle from "./Particle";
 
-const HITBOX_MULT = 0.97;
+const HITBOX_MULT = 0.95;
 
 export default class ParticleField {
   readonly particles: Particle[] = [];

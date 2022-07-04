@@ -1,4 +1,4 @@
-const HITBOX_MULT = 0.97;
+const HITBOX_MULT = 0.95;
 export default class ParticleField {
     constructor(size) {
         this.particles = [];

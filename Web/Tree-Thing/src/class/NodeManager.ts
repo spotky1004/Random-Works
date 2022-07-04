@@ -79,13 +79,16 @@ export default class NodeManager {
     }
 
     this.changeLayout("circle");
+    const maxEdgeCount = this.nodes.length * (this.nodes.length - 1) / 2;
+    const totalDependsOn = this.nodes.reduce((a, node) => a + node.dependsOn.length, 0);
+    const totalIsUsedBy = this.nodes.reduce((a, node) => a + node.isUsedBy.length, 0);
     this.stats = {
-      totalDependsOn: this.nodes.reduce((a, node) => a + node.dependsOn.length, 0),
-      totalIsUsedBy: this.nodes.reduce((a, node) => a + node.isUsedBy.length, 0),
+      totalDependsOn,
+      totalIsUsedBy,
       typeCount: this.nodes.length,
       assemblyCount: this.assemblyColors.size,
-      dependencyComplexity: 0,
-      isUsedByComplexity: 0
+      dependencyComplexity: totalDependsOn/maxEdgeCount,
+      isUsedByComplexity: totalIsUsedBy/maxEdgeCount
     };
     this.nodeList.init();
   }
