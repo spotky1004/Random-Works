@@ -77,10 +77,12 @@ export default class NodeList {
         const nodeItemEl = this.nodeElMap.get(node.nodeKey);
         if (!nodeItemEl || nodeItemEl.style.display === "none")
             return;
+        this.nodeInfoEls.wrapper.style.display = "none";
         nodeItemEl.scrollIntoView();
         window.scrollTo({
             top: 0
         });
+        this.nodeInfoEls.wrapper.style.display = "";
     }
     openNodeInfo(node) {
         const nodeItemEl = this.nodeElMap.get(node.nodeKey);
