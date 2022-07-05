@@ -254,9 +254,9 @@ export default class AppEventsManager {
                 }
                 if (scale !== 1) {
                     node.attr.size *= scale;
-                    this.app.render();
                 }
             }
+            this.app.render();
         }
     }
     resetEventDatas() {
