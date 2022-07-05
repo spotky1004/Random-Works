@@ -32,5 +32,16 @@
     "dependsOn": [
       "C, Assembly-firstpass"
     ]
+  },
+  "E, ASDF": {
+    "isUsedBy": [
+      "A, Assembly-CSharp",
+      "B, Assembly-CSharp-Editor",
+      "C, Assembly-firstpass",
+      "D, Google.Play.Common"
+    ],
+    "dependsOn": [
+      
+    ]
   }
 }

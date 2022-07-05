@@ -10,7 +10,7 @@ const app = new App({
 });
 app.render();
 
-window.fetch("./examples/simple.txt")
+window.fetch("./examples/simple.json")
   .then(b => b.json())
   .then(json => app.readParsedLog(logParser(json)))
   .catch(_ => console.error(_));
@@ -36,3 +36,5 @@ function tick() {
 tick();
 
 console.log(app);
+// @ts-ignore
+window.app = app;
