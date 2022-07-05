@@ -259,8 +259,6 @@ export default class AppEventsManager {
     const yOffset = curPos.y - prevPos.y;
     camera.x -= xOffset;
     camera.y -= yOffset;
-    console.log(xOffset, yOffset);
-    
     this.app.render();
   }
 
