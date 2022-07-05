@@ -9,6 +9,7 @@ export default class AppEventsManager {
   selectedNodes: Node[];
   holdSpaceStartPos: Position | null;
   holdSpaceEndPos: Position | null;
+  prevAbsMousePos: Position;
   prevMousePos: Position;
   holdingSpace: boolean;
   private screenMovingSpeed: Position;
@@ -19,6 +20,7 @@ export default class AppEventsManager {
     this.canvas = canvas;
     this.holding = false;
     this.selectedNodes = [];
+    this.prevAbsMousePos = { x: 0, y: 0 };
     this.prevMousePos = { x: 0, y: 0 };
     this.screenMovingSpeed = { x: 0, y: 0 };
     this.holdSpaceStartPos = null;
@@ -105,6 +107,7 @@ export default class AppEventsManager {
         isRightClick = e.buttons === 2 || e.buttons === 3;
       }
 
+      this.prevAbsMousePos = { x: e.offsetX, y: e.offsetY };
       const to: Position = this.pixelPosToGlobalPos(this.canvas.width, this.canvas.height, e.offsetX, e.offsetY);
       if (!isRightClick) {
         this.mousemove(to);
@@ -247,11 +250,17 @@ export default class AppEventsManager {
   }
 
   wheel(dy: number) {
+    const absMousePos = this.prevAbsMousePos;
     const camera = this.app.canvas.camera;
-    let prevZoom = camera.zoom;
+    const prevPos = this.pixelPosToGlobalPos(this.canvas.width, this.canvas.height, absMousePos.x, absMousePos.y);
     camera.zoom *= 1.01**(-dy/8);
-    camera.x -= (1/camera.zoom - 1/prevZoom)/2;
-    camera.y -= (1/camera.zoom - 1/prevZoom)/2;
+    const curPos = this.pixelPosToGlobalPos(this.canvas.width, this.canvas.height, absMousePos.x, absMousePos.y);
+    const xOffset = curPos.x - prevPos.x;
+    const yOffset = curPos.y - prevPos.y;
+    camera.x -= xOffset;
+    camera.y -= yOffset;
+    console.log(xOffset, yOffset);
+    
     this.app.render();
   }
 
