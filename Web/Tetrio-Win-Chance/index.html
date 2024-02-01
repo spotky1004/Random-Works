@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tetrio Win Chance Calculator</title>
+</head>
+<body>
+  <input id="myTr" placeholder="My TR" value="" />
+  <input id="opTr" placeholder="Opponent TR" value="" />
+  <div id="output">
+    Win Chance: 50.0000000000%
+  </div>
+  <script>
+    const DEFAULT_RD = 65;
+    function glickoToTR(rating, rd = DEFAULT_RD) {
+      return 25000 / (1 + 10**((1500 - rating) * Math.PI / Math.sqrt(3 * Math.log(10)**2 * rd**2 + 2500 * (64 * Math.PI**2 + 147 * Math.log(10)**2))));
+    }
+    function TRToGlicko(tr, rd = DEFAULT_RD) {
+      return -Math.log10(25000 / tr - 1) * Math.sqrt(3 * Math.log(10)**2 * rd**2 + 2500 * (64 * Math.PI**2 + 147 * Math.log(10)**2)) / Math.PI + 1500;
+    }
+    function combination(n, r) {
+      let out = 1;
+      for (let i = 0; i < r; i++) {
+        out *= (n - i);
+        out /= (i + 1);
+      }
+      return out;
+    }
+    function calcWinChance(myTr, opTr, myRd = DEFAULT_RD, opRd = DEFAULT_RD) {
+      const rdDiff = TRToGlicko(opTr, opRd) - TRToGlicko(myTr, myRd);
+      const singleWinChance = 1 / (1 + 10**(rdDiff / 400));
+    
+      const maxTr = Math.max(myTr, opTr);
+      let winBy = 3;
+      if (maxTr > 16000) winBy += 2;
+      if (maxTr > 23200) winBy += 2;
+    
+      let winChance = 0;
+      for (let i = 0; i < winBy; i++) {
+        const c = combination(winBy - 1 + i, i);
+        const p = singleWinChance**winBy * (1 - singleWinChance)**i;
+        winChance += c * p;
+      }
+      return winChance;
+    }
+
+    const myTrInputEl = document.getElementById("myTr");
+    const opTrInputEl = document.getElementById("opTr");
+    const outputEl = document.getElementById("output");
+    function updateChance() {
+      outputEl.innerText = `Win Chance: ${(calcWinChance(Number(myTrInputEl.value), Number(opTrInputEl.value)) * 100).toFixed(10)}%`;
+    }
+    myTrInputEl.addEventListener("keyup", updateChance);
+    opTrInputEl.addEventListener("keyup", updateChance);
+  </script>
+</body>
+</html>
