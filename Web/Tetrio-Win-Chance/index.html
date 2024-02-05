@@ -29,20 +29,8 @@
     }
     function calcWinChance(myTr, opTr, myRd = DEFAULT_RD, opRd = DEFAULT_RD) {
       const rdDiff = TRToGlicko(opTr, opRd) - TRToGlicko(myTr, myRd);
-      const singleWinChance = 1 / (1 + 10**(rdDiff / 400));
-    
-      const maxTr = Math.max(myTr, opTr);
-      let winBy = 3;
-      if (maxTr > 16000) winBy += 2;
-      if (maxTr > 23200) winBy += 2;
-    
-      let winChance = 0;
-      for (let i = 0; i < winBy; i++) {
-        const c = combination(winBy - 1 + i, i);
-        const p = singleWinChance**winBy * (1 - singleWinChance)**i;
-        winChance += c * p;
-      }
-      return winChance;
+
+      return 1 / (1 + 10**(rdDiff / 400));
     }
 
     const myTrInputEl = document.getElementById("myTr");
